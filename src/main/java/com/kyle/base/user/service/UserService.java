@@ -19,6 +19,6 @@ public interface UserService {
 
 	void changePwd(Map<String, Object> param) throws ServiceException;
 
-	void changeState(Map<String, Object> param);
+	void changeState(Map<String, Object> param) throws ServiceException;
 
 }

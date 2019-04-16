@@ -62,9 +62,10 @@ public class UserController {
 	 * 改变该人员的状态，删除或者禁用
 	 * @param param
 	 * @return
+	 * @throws ServiceException 
 	 */
 	@RequestMapping(value="changeState",method=RequestMethod.POST)
-	public ResponseResult changeState(@RequestBody Map<String,Object> param){
+	public ResponseResult changeState(@RequestBody Map<String,Object> param) throws ServiceException{
 		ResponseResult result = new ResponseResult();
 		userService.changeState(param);
 		return result;

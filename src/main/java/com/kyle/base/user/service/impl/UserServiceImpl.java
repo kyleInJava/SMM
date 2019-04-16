@@ -130,9 +130,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void changeState(Map<String, Object> param) {
-		Integer userId = Integer.parseInt(param.get("id").toString());
-		Integer state = Integer.parseInt(param.get("state").toString());
+	public void changeState(Map<String, Object> param) throws ServiceException {
+		Integer userId = CommonUtil.CheckData(param.get("id"), Integer.class, StateInfo.userId_must_not_null);
+		Integer state = CommonUtil.CheckData(param.get("state"), Integer.class, StateInfo.userId_must_not_null);
 		SysUser user = sysUserMapper.selectByPrimaryKey(userId);
 		user.setState(state);
 		sysUserMapper.updateByPrimaryKeySelective(user);

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kyle.base.resource.dao.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.kyle.base.resource.entity.SysResource">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="request_url" jdbcType="VARCHAR" property="requestUrl" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="need_permission" jdbcType="BIT" property="needPermission" />
+    <result column="updater" jdbcType="INTEGER" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sys_resource.id, sys_resource.name, sys_resource.type, sys_resource.parent_id, sys_resource.url, 
+    sys_resource.request_url, sys_resource.note, sys_resource.state, sys_resource.sort,
+     sys_resource.need_permission,sys_resource.updater, sys_resource.update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.kyle.base.resource.entity.SysResource" keyProperty="id" useGeneratedKeys="true">
+    insert into sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="requestUrl != null">
+        request_url,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="needPermission != null">
+        need_permission,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUrl != null">
+        #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="needPermission != null">
+        #{needPermission,jdbcType=BIT},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kyle.base.resource.entity.SysResource">
+    update sys_resource
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUrl != null">
+        request_url = #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="needPermission != null">
+        need_permission = #{needPermission,jdbcType=BIT},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="listResource" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from sys_resource
+  	where 1=1 and state = 0
+  </select>
+  
+  <!-- 查询当前用户觉有权限的所有资源 -->
+  <select id="getResourceByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List" />
+  	from sys_user
+  	inner join sys_user_role as sur on sys_user.id = sur.user_id
+  	inner join sys_role_resource as srr on srr.role_id = sur.role_id
+  	inner join sys_resource on sys_resource.id = srr.resource_id 
+  	where sys_user.id = #{userId} and sys_resource.state = 0
+  	UNION 
+  	SELECT
+  		<include refid="Base_Column_List" />
+   	FROM sys_resource
+  	WHERE sys_resource.need_permission = 0 
+  	
+  </select>
+  
+  <!-- 查询用户的权限和权限部门 -->
+  <select id="getPermissionResourceByUserId" parameterType="java.lang.Integer" resultType="java.util.Map">
+  	select
+  		sys_user.id,sys_role.id,sur.dept_id,sys_role.data_permission,
+  		sys_resource.id,sys_resource.request_url
+  	from sys_user
+  	inner join sys_user_role as sur on sys_user.id = sur.user_id
+  	inner join sys_role on sys_role.id = sur.role_id 
+  	inner join sys_role_resource as srr on srr.role_id = sys_role.id
+  	inner join sys_resource on sys_resource.id = srr.resource_id 
+  	where sys_user.id = #{userId} and sys_role.state = 0 and sys_resource.state = 0
+  </select>
+  
+  <!-- 获取所有不需要权限的资源 -->
+  <select id="getNoPermissionsRequiredResource" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from sys_resource
+  	where state = 0 and need_permission = 0
+  </select>
+</mapper>

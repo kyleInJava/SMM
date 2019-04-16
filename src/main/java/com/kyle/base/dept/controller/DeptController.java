@@ -20,7 +20,7 @@ public class DeptController {
 	@Resource
 	private DeptService deptServiceImpl;
 	
-	@RequestMapping(value="list" ,method=RequestMethod.POST)
+	@RequestMapping(value="tree" ,method=RequestMethod.POST)
 	public ResponseResult list(@RequestBody Map<String,Object> param){
 		ResponseResult result = new ResponseResult();
 		Map<String, Object> deptTree = deptServiceImpl.getDeptTree(param);

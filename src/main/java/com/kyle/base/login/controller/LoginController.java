@@ -20,6 +20,12 @@ public class LoginController {
 	@Resource
 	private LoginService loginService;
 	
+	/**
+	 * 添加注释
+	 * @param param
+	 * @return
+	 * @throws ServiceException
+	 */
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	public ResponseResult login(@RequestBody Map<String,Object> param) throws ServiceException{
 		ResponseResult result = new ResponseResult();
